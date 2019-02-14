@@ -14,4 +14,6 @@ Pokécord auto-dueler for farming credits.
 - Auto accepting and confirming trades
 - Logs everything
 
+## Screenshots
+
 ###### pm me issues/bugs on discord insane#6842
