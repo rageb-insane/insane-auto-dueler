@@ -37,6 +37,7 @@ bot.on('message', async message => {
             if (embed.title.includes(`Battle`)) {
                 setTimeout(function() {
                     bot.channels.get(channelID).send(`${prefix}use 1`);
+                    console.log(` ` + now + bot.user.username.green + ` locked in moveset.`.gray)
                 }, 1500);
             }
         }
@@ -44,14 +45,23 @@ bot.on('message', async message => {
         if (message.author.id === (pokecord)) {
             if (message.channel.id === (channelID)) {
                 if (embed.title.includes(`has fainted`)) {
+                    var strings = [
+                        `${embed.description}`
+                    ];
                     setTimeout(function() {
                         message.channel.send(duel)
                         console.log(` ` + now + bot.user.username.green + ` is starting a new duel.`.gray)
                     }, 1500);
-                    console.log(` ` + now + embed.title.green)
-                    console.log(` ` + now + embed.description.green)
-                }
-                if (embed.title.includes(`level up!`)) {
+                    var result = strings.map(function(s) {
+                        return s.split(/\s+/).slice(0, 12);
+                    });
+                    console.log(` ` + now + embed.title.cyan)
+                    console.log(` ` + now + result[0][0].green + ` ` + result[0][1].green);
+                    if (embed.description.includes(`credits`)) {
+                        console.log(` ` + now + result[0][2].green + ` was awarded `.gray + result[0][5].green + ` ` + result[0][6].gray + ` ` + result[0][7].green + ` ` + result[0][8].green + ` ` + result[0][9].gray + ` ` + result[0][10].gray)
+                    } else {
+                        console.log(` ` + now + result[0][2].green + ` was awarded `.gray + result[0][5].green + ` ` + result[0][6].gray + ` ` + result[0][7].gray)
+                    }
                 }
             }
         }
@@ -60,14 +70,21 @@ bot.on('message', async message => {
             if (message.channel.id === (channelID)) {
                 if (embed.title.includes(`${bot.user.username}'s`)) {
                     if (embed.title.includes(`used`))
-                    console.log(` ` + now + embed.title.red)
+                        console.log(` ` + now + embed.title.yellow)
                 }
             }
         }
+        //Log credits
         if (message.channel.id === (channelID)) {
             if (message.author.id === (pokecord)) {
                 if (embed.title.includes(`${bot.user.username}'s balance`)) {
-                    console.log(` ` + now + bot.user.username.green + ` has`.gray + embed.description.split(`have`).pop().green)
+                    var strings = [
+                        `${embed.description}`
+                    ];
+                    var result = strings.map(function(s) {
+                        return s.split(/\s+/).slice(0, 5);
+                    });
+                    console.log(` ` + now + `${bot.user.username}'s`.green + ` balance: `.gray + result[0][3].green)
                 }
             }
         }
@@ -83,69 +100,45 @@ bot.on('message', async message => {
             }
         }
     }
-    //Reset duel if slave failed to use a move
-    if (message.author.id === (pokecord)) {
-        if (message.channel.id === (channelID)) {
-            if (message.content.startsWith(`Player `)) {
-                setTimeout(function() {
-                    message.channel.send(duel)
-                    console.log(` ` + now + `Resetting duel`.gray)
-                }, 1500);
-            }
-        }
-    }
-    //Reset duel if slave sent messages too fast
-    if (message.author.id === (pokecord)) {
-        if (message.channel.id === (channelID)) {
-            if (message.content.includes(`sending commands too fast,`)) {
-                setTimeout(function() {
-                    message.channel.send(duel)
-                    console.log(` ` + now + `Resetting duel`.gray)
-                }, 2200);
-            }
-        }
-    }
-    //Reset duel if problem loading error
-    if (message.author.id === (pokecord)) {
-        if (message.channel.id === (channelID)) {
-            if (message.content.includes(`problem loading this duel.`)) {
-                setTimeout(function() {
-                    message.channel.send(duel)
-                    console.log(` ` + now + `Resetting duel`.gray)
-                }, 1700);
-            }
-        }
-    }
-    //Reset duel if failed getting damage error
-    if (message.author.id === (pokecord)) {
-        if (message.channel.id === (channelID)) {
-            if (message.content.includes(`Failed getting damage multiplier for this battle`)) {
-                setTimeout(function() {
-                    message.channel.send(duel)
-                    console.log(` ` + now + `Resetting duel`.gray)
-                }, 1300);
-            }
-        }
-    }
-    //Reset duel if starting duel error
+    //Reset duel if error
     if (message.author.id === (pokecord)) {
         if (message.channel.id === (channelID)) {
             if (message.content.includes(`There was an error starting this duel.`)) {
                 setTimeout(function() {
                     message.channel.send(duel)
-                    console.log(` ` + now + `Resetting duel`.gray)
+                    console.log(` ` + now + message.content.red)
+                    console.log(` ` + now + `Resetting duel.`.gray)
                 }, 1300);
-            }
-        }
-    }
-    //Reset duel if starting duel error
-    if (message.author.id === (pokecord)) {
-        if (message.channel.id === (channelID)) {
-            if (message.content.includes(`is already in a duel`)) {
+            } else if (message.content.includes(`Failed getting damage multiplier for this battle`)) {
                 setTimeout(function() {
                     message.channel.send(duel)
-                    console.log(` ` + now + `Resetting duel`.gray)
-                }, 9000);
+                    console.log(` ` + now + message.content.red)
+                    console.log(` ` + now + `Resetting duel.`.gray)
+                }, 1300);
+            } else if (message.content.includes(`is already in a duel, so the battle has been canceled.`)) {
+                console.log(` ` + now + message.content.red)
+                setTimeout(function() {
+                    message.channel.send(duel)
+                    console.log(` ` + now + `Resetting duel.`.gray)
+                }, 50000);
+            } else if (message.content.includes(`problem loading this duel.`)) {
+                setTimeout(function() {
+                    message.channel.send(duel)
+                    console.log(` ` + now + message.content.red)
+                    console.log(` ` + now + `Resetting duel.`.gray)
+                }, 1700);
+            } else if (message.content.includes(`sending commands too fast,`)) {
+                setTimeout(function() {
+                    message.channel.send(duel)
+                    console.log(` ` + now + message.content.red)
+                    console.log(` ` + now + `Resetting duel.`.gray)
+                }, 2200);
+            } else if (message.content.startsWith(`Player `)) {
+                console.log(` ` + now + message.content.red)
+                setTimeout(function() {
+                    message.channel.send(duel)
+                    console.log(` ` + now + `Resetting duel.`.gray)
+                }, 1500);
             }
         }
     }
@@ -155,12 +148,12 @@ bot.on('message', async message => {
             if (message.content.includes(`reset`)) {
                 setTimeout(function() {
                     message.channel.send(duel)
-                    console.log(` ` + now + `Resetting duel`.gray)
+                        .then(console.log(` ` + now + `Manually reset duel.`.gray));
                 }, 700);
             }
         }
     }
-    //Show credits of specific slave
+    //Show credits
     if (message.author.id === (masterID)) {
         if (message.content === `bal ${bot.user}`) {
             setTimeout(function() {
@@ -175,11 +168,20 @@ bot.on('message', async message => {
     }
     //Accept trade request
     if (message.author.id === (pokecord)) {
-        if (message.content.startsWith(`${bot.user}!`))
-        if (message.content.includes(`has invited you to trade!`)) {
-            setTimeout(function() {
-                message.channel.send(`${prefix}accept`)
-            }, 200);
+        if (message.content.startsWith(`${bot.user}!`)) {
+            if (message.content.includes(`has invited you to trade!`)) {
+                var strings = [
+                    `${message.content}`
+                ];
+                var result = strings.map(function(s) {
+                    return s.split(/\s+/).slice(0, 20);
+                });
+                console.log(` ` + now + bot.user.username.green + ` was invited to a trade from `.gray + result[0][1].green + `.`.gray)
+                setTimeout(function() {
+                    message.channel.send(`${prefix}accept`)
+                        .then(console.log(` ` + now + bot.user.username.green + ` accepted the trade with `.gray + result[0][1].green + `.`.gray))
+                }, 200);
+            }
         }
     }
     //Add requested credits in trade
@@ -187,7 +189,7 @@ bot.on('message', async message => {
         if (message.content.includes(`${bot.user} add `)) {
             setTimeout(function() {
                 message.channel.send(prefix + `c ` + message.content.split(`${bot.user} `).pop())
-                .then(console.log(` ` + now + bot.user.username.green + ` added `.gray + message.content.split(`${bot.user} add `).pop().green + ` credits `.green + `to a trade. `.gray))
+                    .then(console.log(` ` + now + bot.user.username.green + ` added `.gray + message.content.split(`${bot.user} add `).pop().green + ` credits `.green + `to a trade. `.gray));
             }, 1400);
         }
     }
@@ -196,21 +198,27 @@ bot.on('message', async message => {
         if (message.content === `${prefix}confirm`) {
             setTimeout(function() {
                 message.channel.send(`${prefix}confirm`)
-                .then(console.log(` ` + now + bot.user.username.green + ` accepted a trade with`.gray + ` ` + message.author.username.green + `.`.gray + ` (${message.author.id}) `.green))
+                    .then(console.log(` ` + now + bot.user.username.green + ` confirmed the trade with`.gray + ` ` + message.author.username.green + `.`.gray));
             }, 200);
+        }
+    }
+    //Log trade axpired
+    if (message.author.id === (pokecord)) {
+        if (message.content === `Trade expired.`) {
+            console.log(` ` + now + message.content.red)
         }
     }
 });
 //Log login
 bot.on("ready", async () => {
-    await console.log(` ` + now + bot.user.username.green + ` successfully logged in.`.gray + ` (${bot.user.id})  `.green);
+    await console.log(` ` + now + bot.user.username.green + ` successfully logged in.`.gray);
     await fs.writeFile("utils/slave2ID.json", `"${bot.user.id}"`, function(err) {
-        if(err) {
+        if (err) {
             return console.log(err);
         }
     });
     fs.writeFile("utils/slave2Username.json", `"${bot.user.username}"`, function(err) {
-        if(err) {
+        if (err) {
             return console.log(err);
         }
     });

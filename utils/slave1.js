@@ -33,6 +33,7 @@ bot.on(`message`, message => {
             if (embed.title.includes(`Battle`)) {
                 setTimeout(function() {
                     bot.channels.get(channelID).send(`${prefix}use 1`);
+                    console.log(` ` + now + bot.user.username.green + ` locked in moveset.`.gray)
                 }, 1500);
             }
         }
@@ -41,7 +42,7 @@ bot.on(`message`, message => {
             if (message.channel.id === (channelID)) {
                 if (embed.title.includes(`${bot.user.username}'s`)) {
                     if (embed.title.includes(`used`))
-                    console.log(` ` + now + embed.title.red)
+                        console.log(` ` + now + embed.title.red)
                 }
             }
         }
@@ -52,7 +53,7 @@ bot.on(`message`, message => {
             if (message.content.startsWith(`${bot.user}!`)) {
                 setTimeout(function() {
                     message.channel.send(`${prefix}accept`)
-                    console.log(` ` + now + bot.user.username.green + ` has`.gray + ` accepted`.green + ` a duel from `.gray + slave2Username.green + `.`.gray)
+                    console.log(` ` + now + bot.user.username.green + ` has`.gray + ` accepted`.gray + ` a duel from `.gray + slave2Username.green + `.`.gray)
                 }, 800);
             }
         }
@@ -60,17 +61,17 @@ bot.on(`message`, message => {
 });
 //Log login
 bot.on("ready", async () => {
-    await console.log(` ` + now + bot.user.username.green + ` successfully logged in.`.gray + ` (${bot.user.id})  `.green);
+    await console.log(` ` + now + bot.user.username.green + ` successfully logged in.`.gray);
     await fs.writeFile("utils/slave1ID.json", `"${bot.user.id}"`, function(err) {
-        if(err) {
+        if (err) {
             return console.log(err);
         }
-    }); 
+    });
     fs.writeFile("utils/slave1Username.json", `"${bot.user.username}"`, function(err) {
-        if(err) {
+        if (err) {
             return console.log(err);
         }
-    }); 
+    });
 });
 //Bot login
 bot.login(slave1)
