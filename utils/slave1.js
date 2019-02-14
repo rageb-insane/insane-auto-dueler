@@ -9,13 +9,13 @@
 //2/13/19
 //By insane
 const slave1 = require("../utils/slave1token.json");
-const masterID = require("../utils/masterID.json");
+const slave2Username = require("../utils/slave2Username.json");
 const prefix = require("../utils/prefix.json");
 const channelID = require("../utils/channelID.json");
-const channelID2 = require("../utils/channelID2.json");
 const Discord = require("discord.js");
 const colors = require('colors');
 const moment = require(`moment`);
+const fs = require('fs');
 
 const bot = new Discord.Client();
 
@@ -31,64 +31,46 @@ bot.on(`message`, message => {
         //Use moveset
         if (message.channel.type === `dm`) {
             if (embed.title.includes(`Battle`)) {
-                bot.channels.get(channelID2).send(`${prefix}use 1`);
+                setTimeout(function() {
+                    bot.channels.get(channelID).send(`${prefix}use 1`);
+                }, 1500);
+            }
+        }
+        //Log attacks
+        if (message.author.id === (pokecord)) {
+            if (message.channel.id === (channelID)) {
+                if (embed.title.includes(`${bot.user.username}'s`)) {
+                    if (embed.title.includes(`used`))
+                    console.log(` ` + now + embed.title.red)
+                }
             }
         }
     });
     //Accept duel
-    if (message.channel.name === (channelID)) {
+    if (message.channel.id === (channelID)) {
         if (message.author.id === (pokecord)) {
             if (message.content.startsWith(`${bot.user}!`)) {
                 setTimeout(function() {
                     message.channel.send(`${prefix}accept`)
+                    console.log(` ` + now + bot.user.username.green + ` has`.gray + ` accepted`.green + ` a duel from `.gray + slave2Username.green + `.`.gray)
                 }, 800);
             }
-        }
-    }
-    //Show credits of specific user
-    if (message.author.id === (masterID)) {
-        if (message.content === `credits ${bot.user}`) {
-            setTimeout(function() {
-                message.channel.send(`${prefix}bal`)
-            }, 700);
-            if (message.content.includes(`${bot.user} You seem`)) {
-                setTimeout(function() {
-                    message.channel.send(`${prefix}bal`)
-                }, 700);
-            }
-            console.log(` ` + now + bot.user.username.green + ` has `)
-        }
-    }
-    //Accept trade request
-    if (message.author.id === (pokecord)) {
-        if (message.content.includes(`has invited you to trade!`)) {
-            setTimeout(function() {
-                message.channel.send(`${prefix}accept`)
-            }, 200);
-        }
-    }
-    //Add requested credits in trade
-    if (message.author.id === (masterID)) {
-        if (message.content.includes(`${bot.user} add `)) {
-            setTimeout(function() {
-                message.channel.send(prefix + `c ` + message.content.split(`${bot.user} `).pop())
-                .then(console.log(` ` + now + bot.user.username.green + ` added `.gray + message.content.split(`${bot.user} add `).pop().green + ` credits `.green + `to a trade. `.gray))
-            }, 1400);
-        }
-    }
-    //Confirm trade
-    if (message.author.id === (masterID)) {
-        if (message.content === `${prefix}confirm`) {
-            setTimeout(function() {
-                message.channel.send(`${prefix}confirm`)
-                .then(console.log(` ` + now + bot.user.username.green + ` accepted a trade with`.gray + ` ` + message.author.username.green + `.`.gray + ` (${message.author.id}) `.green))
-            }, 200);
         }
     }
 });
 //Log login
 bot.on("ready", async () => {
-    console.log(` ` + now + bot.user.username.green + ` successfully logged in.`.gray + ` (${bot.user.id})  `.green);
+    await console.log(` ` + now + bot.user.username.green + ` successfully logged in.`.gray + ` (${bot.user.id})  `.green);
+    await fs.writeFile("utils/slave1ID.json", `"${bot.user.id}"`, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+    }); 
+    fs.writeFile("utils/slave1Username.json", `"${bot.user.username}"`, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+    }); 
 });
 //Bot login
-bot.login(slave1);
+bot.login(slave1)
