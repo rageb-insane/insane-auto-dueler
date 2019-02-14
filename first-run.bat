@@ -20,7 +20,6 @@ title Insane Auto Dueler Set-Up
 	if exist utils\channelID.json goto PCCommand
 	set /p ChannelID=Enter Channel ID:
 	@echo "%ChannelID%" > utils\channelID.json
-	@echo %ChannelID% > utils\channelID2.json
 	@cls
 :PCCommand
 	choice /c yn /m "Are You Using The Default Command Prefix (p!)?"
