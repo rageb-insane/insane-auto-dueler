@@ -1,5 +1,13 @@
-# insane-auto-dueler
+# insane auto dueler/Pokécord self-bot
 
-Pokécord auto-dueler for farming credits
+Pokécord auto-dueler for farming credits.
 
-pm me issues/bugs on discord insane#6842
+## Commands
+
+- **duel** - start duelling
+- **reset** - manually reset dueling
+- **bal @user** - to see balance of user (Ex. bal @insane#0666)
+- **@user add [credits]** - add credits to trade (Ex. @insane#0666 add 10000) 
+
+
+###### pm me issues/bugs on discord insane#6842
