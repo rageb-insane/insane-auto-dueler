@@ -16,4 +16,6 @@ Pokécord auto-dueler for farming credits.
 
 ## Screenshots
 
+![screenshot1](https://i.imgur.com/nJene1U.png)
+
 ###### pm me issues/bugs on discord insane#6842
